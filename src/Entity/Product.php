@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\AtDateTrait;
 use App\Repository\ProductRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,7 +20,7 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $decription = null;
+    private ?string $description = null;
 
     #[ORM\Column]
     private ?float $unitPrice = null;
@@ -35,6 +37,13 @@ class Product
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?PlanAndSchema $planAndSchema = null;
+
+    use AtDateTrait;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {
@@ -53,14 +62,14 @@ class Product
         return $this;
     }
 
-    public function getDecription(): ?string
+    public function getDescription(): ?string
     {
-        return $this->decription;
+        return $this->description;
     }
 
-    public function setDecription(string $decription): static
+    public function setDescription(string $description): static
     {
-        $this->decription = $decription;
+        $this->description = $description;
 
         return $this;
     }
