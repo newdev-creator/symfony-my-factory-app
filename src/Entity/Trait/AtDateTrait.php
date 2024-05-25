@@ -12,6 +12,9 @@ trait AtDateTrait
   #[ORM\Column(nullable: true)]
   private ?\DateTimeImmutable $updatedAt = null;
 
+  #[ORM\Column]
+  private ?int $isArchived = 0;
+
   public function getCreatedAt(): ?\DateTimeImmutable
   {
     return $this->createdAt;
@@ -32,6 +35,18 @@ trait AtDateTrait
   public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
   {
     $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  public function getIsArchived(): ?int
+  {
+    return $this->isArchived;
+  }
+
+  public function setIsArchived(int $isArchived): static
+  {
+    $this->isActive = $isArchived;
 
     return $this;
   }

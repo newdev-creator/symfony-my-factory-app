@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order index
+{% endblock %}
+
+{% block body %}
+	<h1>Order index</h1>
+
+	{% include "_partials/_flash_message.html.twig" %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>StartDate</th>
+				<th>CreatedAt</th>
+				<th>UpdatedAt</th>
+				<th>IsArchived</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{ order.id }}</td>
+					<td>{{ order.startDate ? order.startDate|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ order.createdAt ? order.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ order.updatedAt ? order.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>{{ order.isArchived }}</td>
+					<td>
+						<a href="{{ path('order_show', {'order': order.id}) }}">show</a>
+						<a href="{{ path('order_edit', {'order': order.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="6">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('order_new') }}">Create new</a>
+{% endblock %}
