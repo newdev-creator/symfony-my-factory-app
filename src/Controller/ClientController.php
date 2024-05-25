@@ -52,7 +52,7 @@ class ClientController extends AbstractController
         ]);
     }
 
-    #[Route('modifier/{client}', name: 'edit', methods: ['GET', 'POST'], requirements: ['client' => '\d+'])]
+    #[Route('/modifier/{client}', name: 'edit', methods: ['GET', 'POST'], requirements: ['client' => '\d+'])]
     public function edit(Request $request, Client $client, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ClientType::class, $client);
@@ -72,7 +72,7 @@ class ClientController extends AbstractController
         ]);
     }
 
-    #[Route('supprimer/{client}', name: 'delete', methods: ['POST'], requirements: ['client' => '\d+'])]
+    #[Route('/supprimer/{client}', name: 'delete', methods: ['POST'], requirements: ['client' => '\d+'])]
     public function delete(
         Request $request,
         Client $client,
@@ -82,6 +82,36 @@ class ClientController extends AbstractController
             $entityManager->remove($client);
             $entityManager->flush();
             $this->addFlash('success', 'Le client "' . $client->getFactory() . '" a bien été supprimer');
+        }
+
+        return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/archiver/{client}', name: 'archive', methods: ['POST'], requirements: ['tent' => '\d+'])]
+    public function archive(
+        Request $request,
+        Client $client,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('client_archive_' . $client->getId(), $request->request->get('_token'))) {
+            $client->setIsArchived(1);
+            $entityManager->flush();
+            $this->addFlash('success', 'Le client "' . $client->getFactory() . '" a bien été archivé');
+        }
+
+        return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/unarchived/{client}', name: 'unarchived', methods: ['POST'], requirements: ['tent' => '\d+'])]
+    public function unarchived(
+        Request $request,
+        Client $client,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('client_unarchived_' . $client->getId(), $request->request->get('_token'))) {
+            $client->setIsArchived(0);
+            $entityManager->flush();
+            $this->addFlash('success', 'Le client "' . $client->getFactory() . '" a bien été sortie des archives');
         }
 
         return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
