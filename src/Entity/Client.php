@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\AtDateTrait;
 use App\Repository\ClientRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,8 +44,11 @@ class Client
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'client', orphanRemoval: true)]
     private Collection $orders;
 
+    use AtDateTrait;
+
     public function __construct()
     {
+        $this->setCreatedAt(new DateTimeImmutable());
         $this->orders = new ArrayCollection();
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\AtDateTrait;
 use App\Repository\OrderRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -24,6 +26,13 @@ class Order
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Product $product = null;
+
+    use AtDateTrait;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {

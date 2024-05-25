@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\AtDateTrait;
 use App\Repository\PlanAndSchemaRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,13 @@ class PlanAndSchema
 
     #[ORM\Column(length: 255)]
     private ?string $pdfUrl = null;
+
+    use AtDateTrait;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {
