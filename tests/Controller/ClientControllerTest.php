@@ -3,6 +3,7 @@
 namespace App\Test\Controller;
 
 use App\Entity\Client;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -74,8 +75,8 @@ class ClientControllerTest extends WebTestCase
         $fixture->setEmail('My Title');
         $fixture->setPhone('My Title');
         $fixture->setContactPrimary('My Title');
-        $fixture->setCreatedAt('My Title');
-        $fixture->setUpdatedAt('My Title');
+        $fixture->setCreatedAt(new DateTimeImmutable('now'));
+        $fixture->setUpdatedAt(new DateTimeImmutable('now'));
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -99,8 +100,8 @@ class ClientControllerTest extends WebTestCase
         $fixture->setEmail('Value');
         $fixture->setPhone('Value');
         $fixture->setContactPrimary('Value');
-        $fixture->setCreatedAt('Value');
-        $fixture->setUpdatedAt('Value');
+        $fixture->setCreatedAt(new DateTimeImmutable('now'));
+        $fixture->setUpdatedAt(new DateTimeImmutable('now'));
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -119,7 +120,7 @@ class ClientControllerTest extends WebTestCase
             'client[updatedAt]' => 'Something New',
         ]);
 
-        self::assertResponseRedirects('/client/');
+        self::assertResponseRedirects('/client');
 
         $fixture = $this->repository->findAll();
 
@@ -145,8 +146,8 @@ class ClientControllerTest extends WebTestCase
         $fixture->setEmail('Value');
         $fixture->setPhone('Value');
         $fixture->setContactPrimary('Value');
-        $fixture->setCreatedAt('Value');
-        $fixture->setUpdatedAt('Value');
+        $fixture->setCreatedAt(new DateTimeImmutable('now'));
+        $fixture->setUpdatedAt(new DateTimeImmutable('now'));
 
         $this->manager->persist($fixture);
         $this->manager->flush();
@@ -154,7 +155,7 @@ class ClientControllerTest extends WebTestCase
         $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
         $this->client->submitForm('Delete');
 
-        self::assertResponseRedirects('/client/');
+        self::assertResponseRedirects('/client');
         self::assertSame(0, $this->repository->count([]));
     }
 }
