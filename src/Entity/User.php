@@ -62,6 +62,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     use AtDateTrait;
 
+    public function __toString(): string
+    {
+        if (null === $this->firstName && null === $this->lastName) {
+            return $this->email;
+        }
+
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
     public function __construct()
     {
         $this->setCreatedAt(new DateTimeImmutable());
