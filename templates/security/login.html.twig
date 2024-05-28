@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Se connecter - MyFactory</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{% block javascripts %}
+			{{ importmap('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<main class="container mt-5">
+			<form method="post" class="d-flex justify-content-center">
+
+				{% if error %}
+					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+				{% endif %}
+
+				{% if app.user %}
+					<div class="mb-3">
+						You are logged in as
+						{{ app.user.userIdentifier }},
+						<a href="{{ path('app_logout') }}">Logout</a>
+					</div>
+				{% endif %}
+
+				<div class="col-md-6 col-sm-12 mb-3">
+					<div class="card">
+						<div class="card-body">
+							<h1 class="h3 mb-3 fw-bold text-center">Se connecter</h1>
+
+							<div class="form-floating mb-3">
+								<input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+								<label for="username">Adresse e-mail</label>
+							</div>
+
+							<div class="form-floating mb-3">
+								<input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+								<label for="password">Mot de passe</label>
+							</div>
+
+							<div class="checkbox mb-3">
+								<label>
+									<input type="checkbox" name="_remember_me">
+									&nbsp;Se souvenir de moi
+								</label>
+							</div>
+
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+							<button class="w-100 btn btn-lg btn-primary" type="submit">Se connecter</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</main>
+	</body>
+</html>
