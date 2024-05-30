@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     use AtDateTrait;
 
-    public function __toString(): string
+    public function getFullName(): string
     {
         if (null === $this->firstName && null === $this->lastName) {
             return $this->email;
